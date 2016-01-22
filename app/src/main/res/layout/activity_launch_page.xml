@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bihu_blue"
+    tools:context="cn.com.caoyue.bihu.activity.LaunchPageActivity">
+
+    <ImageView
+        android:id="@+id/launch_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/app_icon_big"
+        android:scaleType="fitCenter"
+        android:minHeight="150dp"
+        android:minWidth="150dp" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/launch_icon"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/launch_motto"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/copyright"
+        android:textColor="@color/white_with_alpha_aa" />
+
+</RelativeLayout>

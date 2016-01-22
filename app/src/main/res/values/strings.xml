@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">逼乎</string>
+
+    <string name="title_activity_launch_page">LaunchPageActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="copyright">© Haruue Icymoon</string>
 </resources>
