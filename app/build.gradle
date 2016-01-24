@@ -19,9 +19,25 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+    compile 'com.jude:utils:1.1.0'
+    compile 'com.jude:easyrecyclerview:3.2.3'
+    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+    compile 'com.iangclifton.android:floatlabel:1.0.4'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
 }
