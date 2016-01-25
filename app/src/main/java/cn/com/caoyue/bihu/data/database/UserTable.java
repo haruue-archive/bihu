@@ -6,7 +6,7 @@ import com.activeandroid.annotation.*;
 @Table(name = "User")
 public class UserTable extends Model {
 
-    @Column(name = "id")
+    @Column(name = "uid")
     public String id;
     @Column(name = "name")
     public String name;

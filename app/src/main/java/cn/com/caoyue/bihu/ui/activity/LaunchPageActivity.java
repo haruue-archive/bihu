@@ -1,30 +1,79 @@
 package cn.com.caoyue.bihu.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
 
 import cn.com.caoyue.bihu.BuildConfig;
 import cn.com.caoyue.bihu.R;
+import cn.com.caoyue.bihu.data.convert.UserConverter;
+import cn.com.caoyue.bihu.data.database.UserTable;
 import cn.com.caoyue.bihu.data.network.ApiKeys;
 import cn.com.caoyue.bihu.data.network.RestApi;
-import cn.com.caoyue.bihu.data.transfer.InformationTransfer;
+import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.data.transfer.UserTransfer;
 import cn.com.caoyue.bihu.ui.dialog.LoginDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LaunchPageActivity extends AppCompatActivity implements LoginDialog.LoginDialogListener{
+public class LaunchPageActivity extends AppCompatActivity implements LoginDialog.LoginDialogCreater {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Initialize JUtils & JActivityManager
         JUtils.initialize(getApplication());
-        JUtils.setDebug(BuildConfig.DEBUG, "inMain");;
+        JUtils.setDebug(BuildConfig.DEBUG, "inMain");
+        JActivityManager.getInstance().pushActivity(LaunchPageActivity.this);
         setContentView(R.layout.activity_launch_page);
-        showLoginDialog();
+        // Initialize ActiveAndroid
+        ActiveAndroid.initialize(this);
+        // Check login or not
+        checkLogin();
+    }
+
+    private void checkLogin() {
+        UserTable userTable = (new Select())
+                .from(UserTable.class)
+                .executeSingle();
+        if (null == userTable) {
+            showLoginDialog("");
+            return;
+        }
+        Call<UserTransfer> loginWithOldTokenCall = RestApi.getApiService().loginWithOldToken(ApiKeys.HARUUE_KNOW_WEB_APIKEY, userTable.token);
+        loginWithOldTokenCall.enqueue(new Callback<UserTransfer>() {
+            @Override
+            public void onResponse(Response<UserTransfer> response) {
+                switch (response.code()) {
+                    case 200:
+                        if (null != response.body()) {
+                            onLoginSuccess(response.body());
+                        } else {
+                            JUtils.Toast(getResources().getString(R.string.login_with_old_token_failed));
+                        }
+                        break;
+                    case 404:
+                        JUtils.Toast(getResources().getString(R.string.error_404_apikey));
+                        break;
+                    default:
+                        JUtils.Toast(getResources().getString(R.string.login_with_old_token_failed));
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                JUtils.Toast(getResources().getString(R.string.network_error));
+            }
+        });
     }
 
     private void showLoginDialog(String defaultUsername) {
@@ -37,94 +86,44 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
     }
 
     @Override
-    public boolean onLoginDialogLogin(String username, String password) {
-        return login(username, password);
+    public LoginDialog.LoginDialogListener getLoginDialogListener() {
+        return new LoginDialog.LoginDialogListener() {
+            @Override
+            public void onLoginSuccess(UserTransfer userTransfer) {
+                LaunchPageActivity.this.onLoginSuccess(userTransfer);
+            }
+
+            @Override
+            public void onRegisterSuccess(String username, String password) {
+
+            }
+
+            @Override
+            public void onDialogCancel() {
+                JActivityManager.getInstance().closeAllActivity();
+                System.exit(0);
+            }
+        };
+    }
+
+    public void onLoginSuccess(UserTransfer userTransfer) {
+        CurrentUser.getInstance().storage(userTransfer);
+        // 数据库管理
+        new Delete().from(UserTable.class).execute();
+        new UserConverter(userTransfer).toUserTable().save();
+        // 启动主活动
+        JActivityManager.getInstance().closeAllActivity();
+        MainActivity.actionStart(LaunchPageActivity.this);
     }
 
     @Override
-    public boolean onLoginDialogRegister(String username, String password) {
-        return register(username, password);
+    protected void onDestroy() {
+        super.onDestroy();
+        JActivityManager.getInstance().popActivity(LaunchPageActivity.this);
     }
 
-    @Override
-    public boolean onLoginDialogCancel() {
-        return true;
-    }
-
-    private boolean login(String username, String password) {
-        final boolean[] status = new boolean[1];
-        Call<UserTransfer> loginCall = RestApi.getApiService().login(ApiKeys.HARUUE_KNOW_WEB_APIKEY, username, password);
-        loginCall.enqueue(new Callback<UserTransfer>() {
-            @Override
-            public void onResponse(Response<UserTransfer> response) {
-                switch (response.code()) {
-                    case 200:
-                        if (null != response.body()) {
-                            JUtils.Toast(getResources().getString(R.string.login_success));
-                            //TODO: add login success code here
-                            status[0] = true;
-                        } else {
-                            JUtils.Toast(getResources().getString(R.string.login_failed_for_password_error));
-                            status[0] = false;
-                        }
-                        break;
-                    case 404:
-                        JUtils.ToastLong(getResources().getString(R.string.error_404_apikey));
-                        status[0] = false;
-                        break;
-                    default:
-                        JUtils.ToastLong(getResources().getString(R.string.other_server_error));
-                        status[0] = false;
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                JUtils.Toast(getResources().getString(R.string.network_error));
-                status[0] = false;
-            }
-        });
-        return status[0];
-    }
-
-    private boolean register(String username, String password) {
-        final boolean[] status = new boolean[1];
-        Call<InformationTransfer> loginCall = RestApi.getApiService().register(ApiKeys.HARUUE_KNOW_WEB_APIKEY, username, password);
-        loginCall.enqueue(new Callback<InformationTransfer>() {
-            @Override
-            public void onResponse(Response<InformationTransfer> response) {
-                switch (response.code()) {
-                    case 200:
-                        if (null != response.body()) {
-                            JUtils.Toast(getResources().getString(R.string.register_success));
-                            //TODO: add register success code here
-                            status[0] = true;
-                        } else {
-                            JUtils.Toast(getResources().getString(R.string.register_failed_for_username_exist));
-                            status[0] = false;
-                        }
-                        break;
-                    case 400:
-                        JUtils.Toast(getResources().getString(R.string.register_failed_for_username_exist));
-                        status[0] = false;
-                        break;
-                    case 404:
-                        JUtils.ToastLong(getResources().getString(R.string.error_404_apikey));
-                        status[0] = false;
-                        break;
-                    default:
-                        JUtils.ToastLong(getResources().getString(R.string.other_server_error));
-                        status[0] = false;
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                JUtils.Toast(getResources().getString(R.string.network_error));
-                status[0] = false;
-            }
-        });
-        return status[0];
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, LaunchPageActivity.class);
+        ((AppCompatActivity) context).startActivity(intent);
     }
 }

@@ -40,4 +40,5 @@ dependencies {
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }

@@ -15,4 +15,8 @@ public interface ApiService {
     @POST("login.php")
     Call<UserTransfer> login(@Field("apikey") String apikey, @Field("name") String name, @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("loginWithOldToken.php")
+    Call<UserTransfer> loginWithOldToken(@Field("apikey") String apikey, @Field("token") String token);
+
 }

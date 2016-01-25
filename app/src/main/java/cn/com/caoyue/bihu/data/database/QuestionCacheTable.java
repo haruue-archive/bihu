@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Table;
 @Table(name = "QuestionCache")
 public class QuestionCacheTable extends Model {
 
-    @Column(name = "id")
+    @Column(name = "qid")
     public String id;
     @Column(name = "title")
     public String title;
