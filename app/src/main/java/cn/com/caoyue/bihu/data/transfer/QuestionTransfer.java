@@ -19,7 +19,7 @@ public class QuestionTransfer {
     public String content;
     @SerializedName("bestAnswerId")
     @Expose
-    public Object bestAnswerId;
+    public String bestAnswerId;
     @SerializedName("date")
     @Expose
     public String date;
@@ -37,6 +37,6 @@ public class QuestionTransfer {
     public String authorName;
     @SerializedName("authorFace")
     @Expose
-    public Object authorFace;
+    public String authorFace;
 
 }

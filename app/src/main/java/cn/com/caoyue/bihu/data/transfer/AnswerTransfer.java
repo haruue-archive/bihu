@@ -24,6 +24,6 @@ public class AnswerTransfer {
     public String authorName;
     @SerializedName("authorFace")
     @Expose
-    public Object authorFace;
+    public String authorFace;
 
 }

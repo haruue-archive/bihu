@@ -14,7 +14,7 @@ public class QuestionCacheTable extends Model {
     @Column(name = "content")
     public String content;
     @Column(name = "bestAnswerId")
-    public Object bestAnswerId;
+    public String bestAnswerId;
     @Column(name = "date")
     public String date;
     @Column(name = "recent")
@@ -25,7 +25,24 @@ public class QuestionCacheTable extends Model {
     public String authorId;
     @Column(name = "authorName")
     public String authorName;
-    @Column(name = "authorName")
-    public Object authorFace;
+    @Column(name = "authorFace")
+    public String authorFace;
 
+    public QuestionCacheTable() {
+        super();
+    }
+
+    public QuestionCacheTable(String id, String title, String content, String bestAnswerId, String date, String recent, String answerCount, String authorId, String authorName, String authorFace) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.bestAnswerId = bestAnswerId;
+        this.date = date;
+        this.recent = recent;
+        this.answerCount = answerCount;
+        this.authorId = authorId;
+        this.authorName = authorName;
+        this.authorFace = authorFace;
+    }
 }

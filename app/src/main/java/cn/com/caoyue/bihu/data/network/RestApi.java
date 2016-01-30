@@ -1,7 +1,5 @@
 package cn.com.caoyue.bihu.data.network;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,11 +11,10 @@ public class RestApi {
     private static ApiService apiService;
 
     public static ApiService getApiService() {
-        if (null == apiService) init();
         return apiService;
     }
 
-    private static void init() {
+    public static void init() {
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd' 'HH:mm:ss")

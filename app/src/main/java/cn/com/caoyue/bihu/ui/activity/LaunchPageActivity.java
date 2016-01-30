@@ -20,6 +20,7 @@ import cn.com.caoyue.bihu.data.network.RestApi;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.data.transfer.UserTransfer;
 import cn.com.caoyue.bihu.ui.dialog.LoginDialog;
+import cn.com.caoyue.bihu.util.AppControl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,8 +35,6 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
         JUtils.setDebug(BuildConfig.DEBUG, "inMain");
         JActivityManager.getInstance().pushActivity(LaunchPageActivity.this);
         setContentView(R.layout.activity_launch_page);
-        // Initialize ActiveAndroid
-        ActiveAndroid.initialize(this);
         // Check login or not
         checkLogin();
     }
@@ -43,9 +42,10 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
     private void checkLogin() {
         UserTable userTable = (new Select())
                 .from(UserTable.class)
+                .orderBy("RANDOM()")
                 .executeSingle();
         if (null == userTable) {
-            showLoginDialog("");
+            showLoginDialog();
             return;
         }
         Call<UserTransfer> loginWithOldTokenCall = RestApi.getApiService().loginWithOldToken(ApiKeys.HARUUE_KNOW_WEB_APIKEY, userTable.token);
@@ -58,13 +58,16 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
                             onLoginSuccess(response.body());
                         } else {
                             JUtils.Toast(getResources().getString(R.string.login_with_old_token_failed));
+                            showLoginDialog();
                         }
                         break;
                     case 404:
                         JUtils.Toast(getResources().getString(R.string.error_404_apikey));
+                        AppControl.exitApp();
                         break;
                     default:
                         JUtils.Toast(getResources().getString(R.string.login_with_old_token_failed));
+                        showLoginDialog();
                         break;
                 }
             }
@@ -72,6 +75,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
             @Override
             public void onFailure(Throwable t) {
                 JUtils.Toast(getResources().getString(R.string.network_error));
+                AppControl.exitApp();
             }
         });
     }
@@ -100,8 +104,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
 
             @Override
             public void onDialogCancel() {
-                JActivityManager.getInstance().closeAllActivity();
-                System.exit(0);
+                AppControl.exitApp();
             }
         };
     }
