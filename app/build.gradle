@@ -33,12 +33,11 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.jude:utils:1.1.0'
     compile 'com.jude:easyrecyclerview:3.2.3'
-    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
-    compile 'com.iangclifton.android:floatlabel:1.0.4'
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.android.support:design:23.1.1'
 }

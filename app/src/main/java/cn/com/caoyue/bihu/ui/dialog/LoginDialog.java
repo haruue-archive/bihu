@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.util.Log;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.iangclifton.android.floatlabel.FloatLabel;
 import com.jude.utils.JUtils;
 
 import cn.com.caoyue.bihu.R;
@@ -51,9 +51,9 @@ public class LoginDialog extends DialogFragment {
         getDialog().setTitle(getResources().getString(R.string.login_or_register));
         getDialog().setCanceledOnTouchOutside(false);
         final View dialogView = inflater.inflate(R.layout.dialog_login, container);
-        final EditText usernameEditText = ((FloatLabel) dialogView.findViewById(R.id.input_username)).getEditText();
+        final EditText usernameEditText = ((TextInputLayout) dialogView.findViewById(R.id.input_username)).getEditText();
         usernameEditText.setText(getTag());
-        final EditText passwordEditText = ((FloatLabel) dialogView.findViewById(R.id.input_password)).getEditText();
+        final EditText passwordEditText = ((TextInputLayout) dialogView.findViewById(R.id.input_password)).getEditText();
         // Set button listener
         dialogView.findViewById(R.id.button_login).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,6 +2,7 @@ package cn.com.caoyue.bihu.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -75,6 +76,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
             @Override
             public void onFailure(Throwable t) {
                 JUtils.Toast(getResources().getString(R.string.network_error));
+                SystemClock.sleep(2000);
                 AppControl.exitApp();
             }
         });

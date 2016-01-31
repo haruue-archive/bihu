@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#991976d2</color>
     <color name="colorAccent">#0077d9</color>
 
     <color name="dongPink">#FC7AFC</color>
@@ -9,4 +9,11 @@
     <color name="bihu_blue">#0077d9</color>
     <color name="white">#FFFFFF</color>
     <color name="white_with_alpha_aa">#AAFFFFFF</color>
+    <color name="white_with_alpha_cc">#CCFFFFFF</color>
+    <color name="white_gray">#AAAAAA</color>
+    <color name="blue_400">#42A5F5</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="blue_600">#1E88E5</color>
+    <color name="blue_700">#1976d2</color>
+    <color name="blue_900">#2a36b1</color>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="190dp"
+    android:background="@color/blue_900">
+
+    <TextView
+        android:id="@+id/nav_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:textSize="18sp"
+        android:textColor="@color/white_with_alpha_aa"
+        android:textStyle="bold"
+        android:text="逼乎用户" />
+    
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_above="@id/nav_username"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/icon_launcher"/>
+
+</RelativeLayout>
