@@ -2,29 +2,29 @@ package cn.com.caoyue.bihu.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.support.design.widget.NavigationView;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.activeandroid.ActiveAndroid;
 import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
 
 import cn.com.caoyue.bihu.BuildConfig;
 import cn.com.caoyue.bihu.R;
+import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
+import cn.com.caoyue.bihu.ui.navigation.NavManager;
 
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;
-    NavigationView navigationView;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +36,19 @@ public class MainActivity extends AppCompatActivity {
         JActivityManager.getInstance().pushActivity(MainActivity.this);
         // Initialize Layout
         // Toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar_inMainActivity);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_inMain);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Drawer
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_inMain);
-        navigationView = (NavigationView) findViewById(R.id.nav_view_inMain);
-        navigationView.setCheckedItem(R.id.home);
-        navigationView.setNavigationItemSelectedListener(new Listeners());
+        drawerLayout = NavManager.getInstance().init(MainActivity.this);
+        // Fragment
+        setFragment(new HomeFragment());
+    }
+
+    public void setFragment(Fragment fragment) {
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
     }
 
     @Override
@@ -57,24 +61,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class Listeners implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
-
-        @Override
-        public void onClick(View v) {
-
-        }
-
-        @Override
-        public boolean onNavigationItemSelected(MenuItem item) {
-            JUtils.Toast(item.getTitle().toString());
-            item.setChecked(true);
-            drawerLayout.closeDrawers();
-            return true;
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JActivityManager.getInstance().popActivity(MainActivity.this);
     }
 
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        ((AppCompatActivity) context).startActivity(intent);
+        context.startActivity(intent);
     }
 }

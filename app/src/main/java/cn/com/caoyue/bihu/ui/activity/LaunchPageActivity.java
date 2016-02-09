@@ -2,11 +2,11 @@ package cn.com.caoyue.bihu.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 
-import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.jude.utils.JActivityManager;
@@ -36,6 +36,8 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
         JUtils.setDebug(BuildConfig.DEBUG, "inMain");
         JActivityManager.getInstance().pushActivity(LaunchPageActivity.this);
         setContentView(R.layout.activity_launch_page);
+        // Button
+        findViewById(R.id.button_show_login_dialog).setOnClickListener(new Listener());
         // Check login or not
         checkLogin();
     }
@@ -76,8 +78,6 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
             @Override
             public void onFailure(Throwable t) {
                 JUtils.Toast(getResources().getString(R.string.network_error));
-                SystemClock.sleep(2000);
-                AppControl.exitApp();
             }
         });
     }
@@ -121,6 +121,18 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
         MainActivity.actionStart(LaunchPageActivity.this);
     }
 
+    private class Listener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.button_show_login_dialog:
+                    checkLogin();
+                    break;
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -129,6 +141,6 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
 
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, LaunchPageActivity.class);
-        ((AppCompatActivity) context).startActivity(intent);
+        context.startActivity(intent);
     }
 }

@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#991976d2</color>
     <color name="colorAccent">#0077d9</color>
 
+    <color name="black">#000000</color>
+    <color name="dark_gray">#616161</color>
     <color name="dongPink">#FC7AFC</color>
     <color name="black_overlay">#66000000</color>
     <color name="bihu_blue">#0077d9</color>
@@ -16,4 +18,9 @@
     <color name="blue_600">#1E88E5</color>
     <color name="blue_700">#1976d2</color>
     <color name="blue_900">#2a36b1</color>
+    <color name="red">#ff1744</color>
+    <color name="gray_800">#424242</color>
+    <color name="gray_700">#616161</color>
+    <color name="gray_600">#757575</color>
+    <color name="gray_500">#9e9e9e</color>
 </resources>

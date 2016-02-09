@@ -5,8 +5,10 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import cn.com.caoyue.util.time.Time;
+
 @Generated("org.jsonschema2pojo")
-public class QuestionTransfer {
+public class QuestionTransfer implements Comparable<QuestionTransfer> {
 
     @SerializedName("id")
     @Expose
@@ -39,4 +41,17 @@ public class QuestionTransfer {
     @Expose
     public String authorFace;
 
+    @Override
+    public int compareTo(QuestionTransfer another) {
+        long timeStampThis = new Time(this.date, "y-M-d H:m:s").getTimeStamp();
+        long timeStampAnother = new Time(another.date, "y-M-d H:m:s").getTimeStamp();
+        if (timeStampThis < timeStampAnother) return -1;
+        else if (timeStampThis > timeStampAnother) return 1;
+        else return 0;  // timeSpampThis == timeStampAnother
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this.id == ((QuestionTransfer) o).id;
+    }
 }

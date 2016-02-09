@@ -17,7 +17,7 @@
     <string name="register_failed_for_username_exist">用户名已被占用</string>
     <string name="error_404_apikey">服务器操作失败，请使用以下信息联系开发者: API Key 无效或服务器异常</string>
     <string name="other_server_error">服务器提交了一个问题，我们正在紧张地撰写答案</string>
-    <string name="network_error">世界上最遥远的距离就是没网</string>
+    <string name="network_error">世界上最遥远的距离就是没网，检查设置</string>
     <string name="login_with_old_token_failed">身份失效，请重新登录</string>
     <string name="username_or_password_empty_error">用户名密码不能为空</string>
     <string name="ask">提问</string>
@@ -25,4 +25,12 @@
     <string name="logout">登出</string>
     <string name="home">主页面</string>
     <string name="account_manage">账户管理</string>
+    <string name="data_empty">暂无数据</string>
+    <string name="no_title">无标题</string>
+    <string name="empty_content">（无）</string>
+    <string name="click_to_log_or_reg">立即注册/登录</string>
+    <string name="post_stamp">%1$s 发表于 %2$s</string>
+    <string name="load_fail">加载失败</string>
+    <string name="load_more">加载更多</string>
+    <string name="no_more">没有更多</string>
 </resources>

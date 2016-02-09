@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
 
         <item
             android:id="@+id/home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/home"
-            android:checkable="true"/>
+            android:checkable="true" />
 
         <item
             android:id="@+id/ask"
             android:icon="@drawable/ic_question_answer_black_24dp"
             android:title="@string/ask"
-            android:checkable="true"/>
+            android:checkable="true" />
 
     </group>
 
@@ -25,13 +24,13 @@
                 android:id="@+id/set_face"
                 android:icon="@drawable/ic_face_black_24dp"
                 android:title="@string/change_face"
-                android:checkable="true"/>
+                android:checkable="true" />
 
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="@string/logout"
-                android:checkable="true"/>
+                android:checkable="true" />
 
         </menu>
 

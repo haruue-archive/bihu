@@ -5,25 +5,52 @@
     android:background="@color/bihu_blue"
     tools:context=".ui.activity.LaunchPageActivity">
 
-    <ImageView
-        android:id="@+id/launch_icon"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/app_icon"
-        android:scaleType="fitCenter"
-        android:minHeight="150dp"
-        android:minWidth="150dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/launch_icon"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:text="@string/launch_motto" />
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/launch_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/app_icon"
+            android:scaleType="fitCenter"
+            android:minHeight="150dp"
+            android:minWidth="150dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/launch_icon"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="@string/launch_motto" />
+
+    </RelativeLayout>
 
     <TextView
+        android:id="@+id/button_show_login_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/flat_button_background"
+        android:layout_above="@+id/launch_copyright"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/click_to_log_or_reg"
+        android:textColor="@color/red"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowColor="@color/black" />
+
+    <TextView
+        android:id="@+id/launch_copyright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

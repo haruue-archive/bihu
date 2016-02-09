@@ -15,13 +15,14 @@
         android:textColor="@color/white_with_alpha_aa"
         android:textStyle="bold"
         android:text="逼乎用户" />
-    
-    <ImageView
+
+    <cn.com.caoyue.bihu.ui.widget.CircleImageView
+        android:id="@+id/nav_face"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_above="@id/nav_username"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/icon_launcher"/>
+        android:src="@drawable/default_face" />
 
 </RelativeLayout>
