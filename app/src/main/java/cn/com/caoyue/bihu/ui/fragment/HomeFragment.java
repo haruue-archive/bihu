@@ -1,10 +1,12 @@
 package cn.com.caoyue.bihu.ui.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,19 +27,26 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
 
     private EasyRecyclerView recyclerView;
     private QuestionAdapter adapter;
-    private Handler handler = new Handler();
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
         recyclerView = (EasyRecyclerView) view.findViewById(R.id.recycler_view_question);
         recyclerView.setAdapter(adapter = new QuestionAdapter(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setRefreshListener(new Listener());
         recyclerView.showProgress();
-        adapter.setError(R.layout.view_error);
+        adapter.setError(R.layout.view_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.resumeMore();
+            }
+        });
         adapter.setMore(R.layout.view_more, new Listener());
         adapter.setNoMore(R.layout.view_no_more);
+        adapter.setOnItemClickListener(new Listener());
         adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
         adapter.notifyDataSetChanged();
         return view;
@@ -73,7 +82,7 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         adapter.notifyDataSetChanged();
     }
 
-    private class Listener implements RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener {
+    private class Listener implements RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
         @Override
         public void onLoadMore() {
@@ -82,9 +91,31 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
 
         @Override
         public void onItemClick(int position) {
-
+            rippleAnimation(position);
+            JUtils.Toast("Press");
         }
 
+        // Ripple 动画
+        void rippleAnimation(int position) {
+            final View view = HomeFragment.this.view.findViewById((int) adapter.getItemId(position));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.animate().translationZ(15F).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            view.animate().translationZ(1f).setDuration(500).start();
+                        }
+                    }
+                }).start();
+            }
+        }
+
+        @Override
+        public void onRefresh() {
+            adapter.clear();
+            QuestionListProvider.getInstance(HomeFragment.this).refresh();
+        }
     }
 
 }
