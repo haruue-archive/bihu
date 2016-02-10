@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
                     setFragment(new HomeFragment());
                     return true;
                 } else {
-                    return false;
+                    return super.onKeyDown(keyCode, event);
                 }
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
 
     public void setCurrentFragmentName(String currentFragmentName) {

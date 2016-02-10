@@ -108,11 +108,12 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
     public void onResume() {
         super.onResume();
         adapter.clear();
-        adapter.addAll(AnswerListProvider.getInstance(AnswerFragment.this, CurrentQuestion.getInstance().id).getArray());
+        adapter.addAll(AnswerListProvider.getInstance(AnswerFragment.this).getArray());
         adapter.notifyDataSetChanged();
         if (currentPosition != -1) {
             recyclerView.scrollToPosition(currentPosition);
         }
+        recyclerView.showRecycler();
     }
 
     private class Listener implements SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener {
@@ -120,7 +121,7 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
         @Override
         public void onRefresh() {
             adapter.clear();
-            AnswerListProvider.getInstance(AnswerFragment.this, CurrentQuestion.getInstance().id).refresh();
+            AnswerListProvider.getInstance(AnswerFragment.this).refresh();
         }
 
         @Override
@@ -130,12 +131,12 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
 
         @Override
         public void onLoadMore() {
-            AnswerListProvider.getInstance(AnswerFragment.this, CurrentQuestion.getInstance().id).loadNextPage();
+            AnswerListProvider.getInstance(AnswerFragment.this).loadNextPage();
         }
 
         // Ripple 动画
         void rippleAnimation(int position) {
-            final View view = AnswerFragment.this.view.findViewById((int) adapter.getItemId(position));
+            final View view = AnswerFragment.this.view.findViewById((int) adapter.getItemId(position - 1));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 view.animate().translationZ(15F).setDuration(300).setListener(new AnimatorListenerAdapter() {
                     @Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import cn.com.caoyue.bihu.data.network.ApiKeys;
 import cn.com.caoyue.bihu.data.network.RestApi;
+import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
 import cn.com.caoyue.bihu.data.transfer.AnswerListTransfer;
 import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
 import retrofit2.Call;
@@ -20,16 +21,16 @@ public class AnswerListProvider {
     private AnswerListDemander demander;
     private static AnswerListProvider provider;
 
-    public static AnswerListProvider getInstance(AnswerListDemander demander, String questionId) {
+    public static AnswerListProvider getInstance(AnswerListDemander demander) {
         if (null == provider) {
             provider = new AnswerListProvider();
             provider.init();
-        } else if (!provider.questionId.equals(questionId)) {
+        } else if (!provider.questionId.equals(CurrentQuestion.getInstance().id)) {
             provider = new AnswerListProvider();
             provider.init();
         }
         provider.demander = demander;
-        provider.questionId = questionId;
+        provider.questionId = CurrentQuestion.getInstance().id;
         return provider;
     }
 
