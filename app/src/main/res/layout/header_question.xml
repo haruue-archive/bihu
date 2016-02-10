@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <cn.com.caoyue.bihu.ui.widget.CircleImageView
+            android:id="@+id/question_author_face"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/default_face" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/question_author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试提问者"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/question_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="日期时间"
+                android:textSize="15sp"
+                android:textColor="@color/gray_700" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/question_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/question_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/empty_content"
+        android:textSize="15sp"
+        android:textColor="@color/gray_800"
+        android:textAllCaps="false" />
+
+</LinearLayout>

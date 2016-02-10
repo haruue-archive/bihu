@@ -14,25 +14,29 @@ import android.view.ViewGroup;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
-import com.jude.utils.JUtils;
 
 import java.util.ArrayList;
 
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.provider.QuestionListProvider;
+import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
 import cn.com.caoyue.bihu.data.transfer.QuestionTransfer;
+import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.QuestionAdapter;
 
 public class HomeFragment extends Fragment implements QuestionListProvider.QuestionListDemander {
 
+    View view;
     private EasyRecyclerView recyclerView;
     private QuestionAdapter adapter;
-    View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        // Activity
+        ((MainActivity) getActivity()).setCurrentFragmentName("HomeFragment");
+        // RecyclerView
         recyclerView = (EasyRecyclerView) view.findViewById(R.id.recycler_view_question);
         recyclerView.setAdapter(adapter = new QuestionAdapter(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -45,15 +49,23 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
             }
         });
         adapter.setMore(R.layout.view_more, new Listener());
-        adapter.setNoMore(R.layout.view_no_more);
+        adapter.setNoMore(R.layout.view_no_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.resumeMore();
+            }
+        });
         adapter.setOnItemClickListener(new Listener());
         adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
         adapter.notifyDataSetChanged();
+        if (CurrentQuestion.isStoraged()) {
+            recyclerView.scrollToPosition(CurrentQuestion.getInstance().position);
+        }
         return view;
     }
 
     @Override
-    public QuestionListProvider.QuestionListLoadListener getListener() {
+    public QuestionListProvider.QuestionListLoadListener getQuestionListLoadListener() {
         return new QuestionListProvider.QuestionListLoadListener() {
             @Override
             public void onSuccess(ArrayList<QuestionTransfer> diff) {
@@ -63,8 +75,11 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
             }
 
             @Override
-            public void onEmpty() {
+            public void onEmpty(int onPage) {
                 adapter.stopMore();
+                if (onPage == 0) {
+                    recyclerView.showEmpty();
+                }
             }
 
             @Override
@@ -80,6 +95,9 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         adapter.clear();
         adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
         adapter.notifyDataSetChanged();
+        if (CurrentQuestion.isStoraged()) {
+            recyclerView.scrollToPosition(CurrentQuestion.getInstance().position);
+        }
     }
 
     private class Listener implements RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -92,7 +110,8 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         @Override
         public void onItemClick(int position) {
             rippleAnimation(position);
-            JUtils.Toast("Press");
+            CurrentQuestion.getInstance().storage(adapter.getItem(position), position);
+            ((MainActivity) getActivity()).setFragment(new AnswerFragment());
         }
 
         // Ripple 动画

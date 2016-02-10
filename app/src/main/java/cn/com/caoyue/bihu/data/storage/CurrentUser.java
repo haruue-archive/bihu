@@ -29,4 +29,9 @@ public class CurrentUser {
         token = userTable.name;
         face = userTable.face;
     }
+
+    public static void clean() {
+        currentUser = null;
+    }
+
 }

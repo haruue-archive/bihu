@@ -47,7 +47,7 @@ public class QuestionListProvider {
             public void onResponse(Response<QuestionListTransfer> response) {
                 if (response.code() == 200) {
                     if (null == response.body().questions) {
-                        demander.getListener().onEmpty();
+                        demander.getQuestionListLoadListener().onEmpty(page);
                         return;
                     }
                     ArrayList<QuestionTransfer> diff = new ArrayList<>(0);
@@ -58,15 +58,15 @@ public class QuestionListProvider {
                         }
                     }
                     currentPage = page;
-                    demander.getListener().onSuccess(diff);
+                    demander.getQuestionListLoadListener().onSuccess(diff);
                 } else {
-                    demander.getListener().onFailure();
+                    demander.getQuestionListLoadListener().onFailure();
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                demander.getListener().onFailure();
+                demander.getQuestionListLoadListener().onFailure();
             }
         });
     }
@@ -82,15 +82,18 @@ public class QuestionListProvider {
     }
 
     public interface QuestionListDemander {
-        QuestionListLoadListener getListener();
+        QuestionListLoadListener getQuestionListLoadListener();
     }
 
     public interface QuestionListLoadListener {
         void onSuccess(ArrayList<QuestionTransfer> diff);
 
-        void onEmpty();
+        void onEmpty(int onPage);
 
         void onFailure();
     }
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
 }

@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import com.jude.utils.JActivityManager;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     FragmentManager fragmentManager;
+    private String currentFragmentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,25 @@ public class MainActivity extends AppCompatActivity {
     public void setFragment(Fragment fragment) {
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                // 使用返回键切回首页
+                if (!currentFragmentName.equals("HomeFragment")) {
+                    setFragment(new HomeFragment());
+                    return true;
+                } else {
+                    return false;
+                }
+        }
+        return false;
+    }
+
+    public void setCurrentFragmentName(String currentFragmentName) {
+        this.currentFragmentName = currentFragmentName;
     }
 
     @Override
