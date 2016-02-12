@@ -3,7 +3,6 @@ package cn.com.caoyue.bihu.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -51,7 +50,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
             showLoginDialog();
             return;
         }
-        Call<UserTransfer> loginWithOldTokenCall = RestApi.getApiService().loginWithOldToken(ApiKeys.HARUUE_KNOW_WEB_APIKEY, userTable.token);
+        Call<UserTransfer> loginWithOldTokenCall = RestApi.getHaruueKnowWebApiService().loginWithOldToken(ApiKeys.HARUUE_KNOW_WEB_APIKEY, userTable.token);
         loginWithOldTokenCall.enqueue(new Callback<UserTransfer>() {
             @Override
             public void onResponse(Response<UserTransfer> response) {

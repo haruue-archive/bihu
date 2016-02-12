@@ -10,6 +10,7 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
+import cn.com.caoyue.bihu.ui.util.GetFace;
 import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 
 public class AnswerAdapter extends RecyclerArrayAdapter<AnswerTransfer> {
@@ -43,6 +44,8 @@ public class AnswerAdapter extends RecyclerArrayAdapter<AnswerTransfer> {
             authorName.setText(data.authorName);
             content.setText(data.content);
             date.setText(data.date);
+            // Set face
+            new GetFace(authorFace, data.authorFace).load();
         }
     }
 }

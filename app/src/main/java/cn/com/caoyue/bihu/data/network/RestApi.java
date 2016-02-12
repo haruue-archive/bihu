@@ -8,24 +8,32 @@ import retrofit2.Retrofit;
 
 public class RestApi {
 
-    private static ApiService apiService;
+    private static ApiService haruueKnowWebApiService;
+    private static ApiService haruueStorageApiService;
 
-    public static ApiService getApiService() {
-        return apiService;
+    public static ApiService getHaruueKnowWebApiService() {
+        return haruueKnowWebApiService;
+    }
+
+    public static ApiService getHaruueStorageApiService() {
+        return haruueStorageApiService;
     }
 
     public static void init() {
 
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd' 'HH:mm:ss")
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
+        Retrofit retrofitBuilderForKnowWebApi = new Retrofit.Builder()
                 .baseUrl("http://120.27.113.124/api/know_web/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
 
-        apiService = retrofit.create(ApiService.class);
+        haruueKnowWebApiService = retrofitBuilderForKnowWebApi.create(ApiService.class);
+
+        Retrofit retrofitBuilderForStorageApi = new Retrofit.Builder()
+                .baseUrl("http://haruue2.wx.jaeapp.com/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                .build();
+
+        haruueStorageApiService = retrofitBuilderForStorageApi.create(ApiService.class);
 
     }
 }

@@ -41,7 +41,7 @@ public class QuestionListProvider {
     public void loadPage(final int page) {
         JUtils.Log("inQuestionListProvider_current", currentPage + "");
         JUtils.Log("inQuestionListProvider_toLoad", page + "");
-        Call<QuestionListTransfer> getQuestionListCall = RestApi.getApiService().getQuestionList(ApiKeys.HARUUE_KNOW_WEB_APIKEY, page + "");
+        Call<QuestionListTransfer> getQuestionListCall = RestApi.getHaruueKnowWebApiService().getQuestionList(ApiKeys.HARUUE_KNOW_WEB_APIKEY, page + "");
         getQuestionListCall.enqueue(new Callback<QuestionListTransfer>() {
             @Override
             public void onResponse(Response<QuestionListTransfer> response) {

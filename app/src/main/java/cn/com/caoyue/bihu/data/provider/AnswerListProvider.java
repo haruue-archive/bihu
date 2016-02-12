@@ -46,7 +46,7 @@ public class AnswerListProvider {
     public void loadPage(final int page) {
         JUtils.Log("inAnswerListProvider_currentPage", currentPage + "");
         JUtils.Log("inAnswerListProvider_toLoad", page + "");
-        Call<AnswerListTransfer> getAnswerListCall = RestApi.getApiService().getAnswerList(ApiKeys.HARUUE_KNOW_WEB_APIKEY, questionId, page + "", "false");
+        Call<AnswerListTransfer> getAnswerListCall = RestApi.getHaruueKnowWebApiService().getAnswerList(ApiKeys.HARUUE_KNOW_WEB_APIKEY, questionId, page + "", "false");
         getAnswerListCall.enqueue(new Callback<AnswerListTransfer>() {
             @Override
             public void onResponse(Response<AnswerListTransfer> response) {

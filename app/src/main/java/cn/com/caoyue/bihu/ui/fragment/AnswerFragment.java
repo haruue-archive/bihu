@@ -24,6 +24,8 @@ import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
 import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.AnswerAdapter;
+import cn.com.caoyue.bihu.ui.util.GetFace;
+import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 
 public class AnswerFragment extends Fragment implements AnswerListProvider.AnswerListDemander {
 
@@ -67,6 +69,8 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
                 ((TextView) header.findViewById(R.id.question_date)).setText(CurrentQuestion.getInstance().date);
                 ((TextView) header.findViewById(R.id.question_title)).setText(CurrentQuestion.getInstance().title);
                 ((TextView) header.findViewById(R.id.question_content)).setText(CurrentQuestion.getInstance().content);
+                // Set face
+                new GetFace((CircleImageView) header.findViewById(R.id.question_author_face), CurrentQuestion.getInstance().authorFace).load();
                 return header;
             }
 
@@ -136,7 +140,7 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
 
         // Ripple 动画
         void rippleAnimation(int position) {
-            final View view = AnswerFragment.this.view.findViewById((int) adapter.getItemId(position - 1));
+            final View view = AnswerFragment.this.view.findViewById((int) adapter.getItemId(position + 1));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 view.animate().translationZ(15F).setDuration(300).setListener(new AnimatorListenerAdapter() {
                     @Override

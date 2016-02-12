@@ -33,4 +33,9 @@
     <string name="load_fail">加载失败</string>
     <string name="load_more">加载更多</string>
     <string name="no_more">没有更多</string>
+    <string name="choose">选择</string>
+    <string name="save">保存</string>
+    <string name="give_up">放弃</string>
+    <string name="upload_fail">上传失败</string>
+    <string name="modify_face_success">修改头像成功</string>
 </resources>

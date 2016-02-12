@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import cn.com.caoyue.bihu.data.network.RestApi;
 
@@ -18,6 +20,9 @@ public class App extends Application {
         ActiveAndroid.initialize(dbConfiguration);
         // Initialize Retrofit
         RestApi.init();
+        // Initialize Universal Image Loader
+        ImageLoaderConfiguration imageLoaderConfiguration = ImageLoaderConfiguration.createDefault(this);
+        ImageLoader.getInstance().init(imageLoaderConfiguration);
     }
 
     @Override

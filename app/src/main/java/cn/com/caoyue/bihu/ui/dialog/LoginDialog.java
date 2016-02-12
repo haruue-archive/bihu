@@ -1,14 +1,10 @@
 package cn.com.caoyue.bihu.ui.dialog;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +79,7 @@ public class LoginDialog extends DialogFragment {
     }
 
     public void onLoginDialogLogin(String username, String password) {
-        Call<UserTransfer> loginCall = RestApi.getApiService().login(ApiKeys.HARUUE_KNOW_WEB_APIKEY, username, password);
+        Call<UserTransfer> loginCall = RestApi.getHaruueKnowWebApiService().login(ApiKeys.HARUUE_KNOW_WEB_APIKEY, username, password);
         loginCall.enqueue(new Callback<UserTransfer>() {
             @Override
             public void onResponse(Response<UserTransfer> response) {
@@ -119,7 +115,7 @@ public class LoginDialog extends DialogFragment {
     }
 
     public void onLoginDialogRegister(final String username, final String password) {
-        Call<InformationTransfer> loginCall = RestApi.getApiService().register(ApiKeys.HARUUE_KNOW_WEB_APIKEY, username, password);
+        Call<InformationTransfer> loginCall = RestApi.getHaruueKnowWebApiService().register(ApiKeys.HARUUE_KNOW_WEB_APIKEY, username, password);
         loginCall.enqueue(new Callback<InformationTransfer>() {
             @Override
             public void onResponse(Response<InformationTransfer> response) {

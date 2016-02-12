@@ -22,8 +22,8 @@ public class UserTable extends Model {
     public UserTable(String id, String name, String face, String token) {
         super();
         this.id = id;
-        this.name = name;
         this.face = face;
+        this.name = name;
         this.token = token;
     }
 }

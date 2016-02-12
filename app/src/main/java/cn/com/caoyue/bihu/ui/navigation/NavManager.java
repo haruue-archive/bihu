@@ -1,6 +1,5 @@
 package cn.com.caoyue.bihu.ui.navigation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
+import cn.com.caoyue.bihu.ui.util.GetFace;
+import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 
 public class NavManager {
 
@@ -28,6 +29,8 @@ public class NavManager {
         navigationView.setNavigationItemSelectedListener(new NavListener(context, drawerLayout));
         // Set Header
         ((TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_username)).setText(CurrentUser.getInstance().name);
+        // Set Face
+        new GetFace((CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_face), CurrentUser.getInstance().face).load();
         return drawerLayout;
     }
 }

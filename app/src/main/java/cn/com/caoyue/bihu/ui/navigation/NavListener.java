@@ -13,6 +13,9 @@ import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.database.UserTable;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.ui.activity.LaunchPageActivity;
+import cn.com.caoyue.bihu.ui.activity.MainActivity;
+import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
+import cn.com.caoyue.bihu.ui.fragment.ModifyFaceFragment;
 
 public class NavListener implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,7 +36,16 @@ public class NavListener implements NavigationView.OnNavigationItemSelectedListe
             JActivityManager.getInstance().closeAllActivity();
             LaunchPageActivity.actionStart(context);
         }
-        item.setChecked(true);
+        if (itemTitle.equals(context.getResources().getString(R.string.change_face))) {
+            item.setChecked(true);
+            ((MainActivity) context).setFragment(new ModifyFaceFragment());
+        }
+        if (itemTitle.equals(context.getResources().getString(R.string.home))) {
+            item.setChecked(true);
+            if (!((MainActivity) context).getCurrentFragmentName().equals("HomeFragment")) {
+                ((MainActivity) context).setFragment(new HomeFragment());
+            }
+        }
         drawerLayout.closeDrawers();
         return true;
     }

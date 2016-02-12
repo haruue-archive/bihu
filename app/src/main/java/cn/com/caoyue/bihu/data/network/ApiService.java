@@ -1,9 +1,13 @@
 package cn.com.caoyue.bihu.data.network;
 
+import java.util.Map;
+
 import cn.com.caoyue.bihu.data.transfer.AnswerListTransfer;
 import cn.com.caoyue.bihu.data.transfer.InformationTransfer;
 import cn.com.caoyue.bihu.data.transfer.QuestionListTransfer;
+import cn.com.caoyue.bihu.data.transfer.UploadInformationTransfer;
 import cn.com.caoyue.bihu.data.transfer.UserTransfer;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -28,5 +32,13 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("getAnswerList.php")
     Call<AnswerListTransfer> getAnswerList(@Field("apikey") String apikey, @Field("questionId") String questionId, @Field("page") String page, @Field("desc") String desc);
+
+    @Multipart
+    @POST("uploadImage.php")
+    Call<UploadInformationTransfer> uploadImage(@PartMap Map<String, RequestBody> params);
+
+    @FormUrlEncoded
+    @POST("modifyFace.php")
+    Call<InformationTransfer> modifyFace(@Field("apikey") String apikey, @Field("token") String token, @Field("face") String face);
 
 }
