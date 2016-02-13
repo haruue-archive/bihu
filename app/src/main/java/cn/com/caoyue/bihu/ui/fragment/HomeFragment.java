@@ -34,8 +34,6 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        // Activity
-        ((MainActivity) getActivity()).setCurrentFragmentName("HomeFragment");
         // RecyclerView
         recyclerView = (EasyRecyclerView) view.findViewById(R.id.recycler_view_question);
         recyclerView.setAdapter(adapter = new QuestionAdapter(getActivity()));
@@ -111,7 +109,7 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         public void onItemClick(int position) {
             rippleAnimation(position);
             CurrentQuestion.getInstance().storage(adapter.getItem(position), position);
-            ((MainActivity) getActivity()).setFragment(new AnswerFragment());
+            ((MainActivity) getActivity()).setFragment(new AnswerFragment(), AnswerFragment.class.getName() + CurrentQuestion.getInstance().id);
         }
 
         // Ripple 动画

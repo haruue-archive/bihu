@@ -96,7 +96,9 @@ public class AnswerListProvider {
 
     public interface AnswerListLoadListener {
         void onSuccess(ArrayList<AnswerTransfer> diff);
+
         void onEmpty(int onPage);
+
         void onFailure();
     }
 

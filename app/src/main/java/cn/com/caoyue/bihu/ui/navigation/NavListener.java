@@ -7,15 +7,14 @@ import android.view.MenuItem;
 
 import com.activeandroid.query.Delete;
 import com.jude.utils.JActivityManager;
-import com.jude.utils.JUtils;
 
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.database.UserTable;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.ui.activity.LaunchPageActivity;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
+import cn.com.caoyue.bihu.ui.activity.ModifyFaceActivity;
 import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
-import cn.com.caoyue.bihu.ui.fragment.ModifyFaceFragment;
 
 public class NavListener implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -30,6 +29,7 @@ public class NavListener implements NavigationView.OnNavigationItemSelectedListe
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         String itemTitle = item.getTitle().toString();
+        drawerLayout.closeDrawers();
         if (itemTitle.equals(context.getResources().getString(R.string.logout))) {
             new Delete().from(UserTable.class).execute();
             CurrentUser.clean();
@@ -37,16 +37,14 @@ public class NavListener implements NavigationView.OnNavigationItemSelectedListe
             LaunchPageActivity.actionStart(context);
         }
         if (itemTitle.equals(context.getResources().getString(R.string.change_face))) {
-            item.setChecked(true);
-            ((MainActivity) context).setFragment(new ModifyFaceFragment());
+            ModifyFaceActivity.actionStart(context);
         }
         if (itemTitle.equals(context.getResources().getString(R.string.home))) {
             item.setChecked(true);
-            if (!((MainActivity) context).getCurrentFragmentName().equals("HomeFragment")) {
-                ((MainActivity) context).setFragment(new HomeFragment());
+            if (!((MainActivity) context).getCurrentFragmentName().equals(HomeFragment.class.getName())) {
+                ((MainActivity) context).setFragment(new HomeFragment(), HomeFragment.class.getName());
             }
         }
-        drawerLayout.closeDrawers();
         return true;
     }
 }

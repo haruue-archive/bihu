@@ -22,7 +22,6 @@ import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.provider.AnswerListProvider;
 import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
 import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
-import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.AnswerAdapter;
 import cn.com.caoyue.bihu.ui.util.GetFace;
 import cn.com.caoyue.bihu.ui.widget.CircleImageView;
@@ -38,8 +37,6 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_answer, container, false);
-        // Activity
-        ((MainActivity) getActivity()).setCurrentFragmentName("AnswerFragment");
         // RecyclerView
         recyclerView = (EasyRecyclerView) view.findViewById(R.id.recycler_view_answer);
         recyclerView.setAdapter(adapter = new AnswerAdapter(getActivity()));

@@ -19,7 +19,7 @@
             android:scaleType="fitCenter"
             android:minHeight="150dp"
             android:minWidth="150dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"

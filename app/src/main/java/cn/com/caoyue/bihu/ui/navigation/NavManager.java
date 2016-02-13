@@ -16,9 +16,14 @@ public class NavManager {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    CircleImageView faceView;
+    private static NavManager navManager;
 
     public static NavManager getInstance() {
-        return new NavManager();
+        if (null == navManager) {
+            navManager = new NavManager();
+        }
+        return navManager;
     }
 
     public DrawerLayout init(Context context) {
@@ -30,7 +35,13 @@ public class NavManager {
         // Set Header
         ((TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_username)).setText(CurrentUser.getInstance().name);
         // Set Face
-        new GetFace((CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_face), CurrentUser.getInstance().face).load();
+        faceView = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_face);
+        new GetFace(faceView, CurrentUser.getInstance().face).load();
         return drawerLayout;
     }
+
+    public static void clean() {
+        navManager = null;
+    }
+
 }

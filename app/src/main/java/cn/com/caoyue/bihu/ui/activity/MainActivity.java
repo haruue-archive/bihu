@@ -2,9 +2,7 @@ package cn.com.caoyue.bihu.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
@@ -20,18 +19,16 @@ import com.jude.utils.JUtils;
 import cn.com.caoyue.bihu.BuildConfig;
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.storage.CurrentFragment;
-import cn.com.caoyue.bihu.data.storage.CurrentSelectImageBitmap;
 import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
-import cn.com.caoyue.bihu.ui.fragment.ModifyFaceFragment;
 import cn.com.caoyue.bihu.ui.navigation.NavManager;
-import cn.com.caoyue.bihu.util.GetAlbumPicture;
+import cn.com.caoyue.bihu.util.CurrentState;
+import cn.com.caoyue.bihu.util.PrivateMethodInvoker;
 
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     FragmentManager fragmentManager;
-    private String currentFragmentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         JUtils.initialize(getApplication());
         JUtils.setDebug(BuildConfig.DEBUG, "inMain");
         JActivityManager.getInstance().pushActivity(MainActivity.this);
+        // Restore savedInstanceState
+        if (null != savedInstanceState) {
+            onRestoreInstanceState(savedInstanceState);
+        }
         // Initialize Layout
         // Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar_inMain);
@@ -50,35 +51,39 @@ public class MainActivity extends AppCompatActivity {
         // Drawer
         drawerLayout = NavManager.getInstance().init(MainActivity.this);
         // Fragment
-        setFragment(new HomeFragment());
+        try {
+            setFragment((Fragment) CurrentFragment.getInstance().getSavedFragmentClass().newInstance(), CurrentFragment.getInstance().getSavedFragmentClass().getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            setFragment(new HomeFragment(), HomeFragment.class.getName());
+        }
     }
 
-    public void setFragment(Fragment fragment) {
+    public void setFragment(Fragment fragment, String tag) {
+        CurrentFragment.getInstance().storage(fragment);
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_container, fragment, tag).commit();
+    }
+
+    public void setFragmentWithArgs(Fragment fragment, String tag, Bundle args) {
+        fragment.setArguments(args);
+        CurrentFragment.getInstance().storage(fragment);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_container, fragment, tag).commit();
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                // 使用返回键切回首页
-                if (!currentFragmentName.equals("HomeFragment")) {
-                    setFragment(new HomeFragment());
-                    return true;
-                } else {
-                    return super.onKeyDown(keyCode, event);
-                }
+    public void onBackPressed() {
+        if (!getCurrentFragmentName().equals(HomeFragment.class.getName())) {
+            // 返回键回到主页面
+            setFragment(new HomeFragment(), HomeFragment.class.getName());
+        } else {
+            super.onBackPressed();
         }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public void setCurrentFragmentName(String currentFragmentName) {
-        this.currentFragmentName = currentFragmentName;
     }
 
     public String getCurrentFragmentName() {
-        return currentFragmentName;
+        return CurrentFragment.getInstance().getSavedFragmentClass().getName();
     }
 
     @Override
@@ -92,18 +97,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case GetAlbumPicture.SELECT_PIC_FOR_FACE:
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    if (null != bitmap) {
-                        CurrentSelectImageBitmap.storage(bitmap);
-                        setFragment(new ModifyFaceFragment());
-                    }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        CurrentState.save(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        CurrentState.restore(savedInstanceState);
     }
 
     @Override
@@ -112,8 +114,23 @@ public class MainActivity extends AppCompatActivity {
         JActivityManager.getInstance().popActivity(MainActivity.this);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ModifyFaceActivity.REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    finish();
+                    NavManager.clean();
+                    actionStart(MainActivity.this);
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
+        ((AppCompatActivity) context).overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
         context.startActivity(intent);
     }
 }

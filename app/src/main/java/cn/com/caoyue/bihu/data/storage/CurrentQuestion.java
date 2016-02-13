@@ -1,8 +1,12 @@
 package cn.com.caoyue.bihu.data.storage;
 
+import com.jude.utils.JUtils;
+
+import java.io.Serializable;
+
 import cn.com.caoyue.bihu.data.transfer.QuestionTransfer;
 
-public class CurrentQuestion {
+public class CurrentQuestion implements Serializable {
 
     public String id;
     public String title;
@@ -34,6 +38,15 @@ public class CurrentQuestion {
         this.authorFace = transfer.authorFace;
         this.position = position;
         this.isStoraged = true;
+    }
+
+    public static void restoreInstance(Serializable data) {
+        try {
+            currentQuestion = (CurrentQuestion) data;
+        } catch (Exception e) {
+            JUtils.Log("inRestoreInstance_CurrentQuestion, " + "Failed for " + e.toString());
+            e.printStackTrace();
+        }
     }
 
     public static void clean() {
