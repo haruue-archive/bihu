@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,17 +26,19 @@ import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.provider.AnswerListProvider;
 import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
 import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
+import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.AnswerAdapter;
 import cn.com.caoyue.bihu.ui.util.GetFace;
 import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 
-public class AnswerFragment extends Fragment implements AnswerListProvider.AnswerListDemander {
+public class AnswerFragment extends Fragment implements AnswerListProvider.AnswerListDemander, MainActivity.CommitSuccessCallBack {
 
     View view;
     EasyRecyclerView recyclerView;
     AnswerAdapter adapter;
     AnswerTransfer currentAnswer;
     int currentPosition = -1;
+    private Handler handler = new Handler();
 
     @Nullable
     @Override
@@ -89,7 +92,10 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
 
             }
         });
-        new Listener().onRefresh();
+        if (null == savedInstanceState) {
+            adapter.clear();
+            AnswerListProvider.getInstance(AnswerFragment.this).refresh();
+        }
         return view;
     }
 
@@ -121,9 +127,6 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
     @Override
     public void onResume() {
         super.onResume();
-        adapter.clear();
-        adapter.addAll(AnswerListProvider.getInstance(AnswerFragment.this).getArray());
-        adapter.notifyDataSetChanged();
         if (currentPosition != -1) {
             recyclerView.scrollToPosition(currentPosition);
         }
@@ -149,12 +152,22 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
         return true;
     }
 
+    @Override
+    public void onCommitSuccess() {
+        new Listener().onRefresh();
+    }
+
     private class Listener implements SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener {
 
         @Override
         public void onRefresh() {
-            adapter.clear();
-            AnswerListProvider.getInstance(AnswerFragment.this).refresh();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.clear();
+                    AnswerListProvider.getInstance(AnswerFragment.this).refresh();
+                }
+            }, 500);
         }
 
         @Override

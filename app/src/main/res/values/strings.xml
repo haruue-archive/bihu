@@ -43,4 +43,16 @@
     <string name="copy_question_content">复制问题内容</string>
     <string name="copy_answer">复制这条回答</string>
     <string name="back_to_top">返回顶部</string>
+    <string name="title">标题</string>
+    <string name="question_title">问题标题</string>
+    <string name="question_content">问题内容</string>
+    <string name="your_answer">你的回答</string>
+    <string name="commit">提交</string>
+    <string name="new_question">新问题</string>
+    <string name="new_answer">新回答</string>
+    <string name="title_cannot_be_empty">标题不能为空</string>
+    <string name="commit_question_success">问题提交成功</string>
+    <string name="fail_please_retry">失败，请重试</string>
+    <string name="answer_content_cannot_be_empty">答案内容不能为空</string>
+    <string name="commit_answer_success">提交答案成功</string>
 </resources>

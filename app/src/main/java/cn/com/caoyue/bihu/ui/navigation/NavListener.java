@@ -3,6 +3,7 @@ package cn.com.caoyue.bihu.ui.navigation;
 import android.content.Context;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.activeandroid.query.Delete;
@@ -14,6 +15,7 @@ import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.ui.activity.LaunchPageActivity;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.activity.ModifyFaceActivity;
+import cn.com.caoyue.bihu.ui.dialog.NewQuestionDialog;
 import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
 
 public class NavListener implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +46,9 @@ public class NavListener implements NavigationView.OnNavigationItemSelectedListe
             if (!((MainActivity) context).getCurrentFragmentName().equals(HomeFragment.class.getName())) {
                 ((MainActivity) context).setFragment(new HomeFragment(), HomeFragment.class.getName());
             }
+        }
+        if (itemTitle.equals(context.getResources().getString(R.string.ask))) {
+            new NewQuestionDialog().show(((AppCompatActivity) context).getSupportFragmentManager(), NewQuestionDialog.class.getName());
         }
         return true;
     }

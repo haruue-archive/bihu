@@ -41,6 +41,7 @@ public class AnswerListProvider {
     private void init() {
         array = new ArrayList<>(0);
         currentPage = 0;
+        loadPage(currentPage);
     }
 
     public void loadPage(final int page) {
@@ -56,10 +57,12 @@ public class AnswerListProvider {
                         return;
                     }
                     ArrayList<AnswerTransfer> diff = new ArrayList<>(0);
-                    for (AnswerTransfer i : response.body().answers) {
-                        if (!array.contains(i)) {
-                            array.add(i);
-                            diff.add(i);
+                    synchronized (this) {
+                        for (AnswerTransfer i : response.body().answers) {
+                            if (!array.contains(i)) {
+                                array.add(i);
+                                diff.add(i);
+                            }
                         }
                     }
                     currentPage = page;
@@ -80,7 +83,7 @@ public class AnswerListProvider {
         loadPage(currentPage + 1);
     }
 
-    public void refresh() {
+    public synchronized void refresh() {
         currentPage = 0;
         array.clear();
         loadPage(currentPage);

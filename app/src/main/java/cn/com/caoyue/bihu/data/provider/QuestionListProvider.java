@@ -51,10 +51,12 @@ public class QuestionListProvider {
                         return;
                     }
                     ArrayList<QuestionTransfer> diff = new ArrayList<>(0);
-                    for (QuestionTransfer i : response.body().questions) {
-                        if (!array.contains(i)) {
-                            array.add(i);
-                            diff.add(i);
+                    synchronized (this) {
+                        for (QuestionTransfer i : response.body().questions) {
+                            if (!array.contains(i)) {
+                                array.add(i);
+                                diff.add(i);
+                            }
                         }
                     }
                     currentPage = page;
@@ -75,7 +77,7 @@ public class QuestionListProvider {
         loadPage(currentPage + 1);
     }
 
-    public void refresh() {
+    public synchronized void refresh() {
         currentPage = 0;
         array.clear();
         loadPage(currentPage);

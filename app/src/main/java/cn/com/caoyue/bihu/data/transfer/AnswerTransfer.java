@@ -5,10 +5,12 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import cn.com.caoyue.util.time.Time;
 
 @Generated("org.jsonschema2pojo")
-public class AnswerTransfer implements Comparable<AnswerTransfer> {
+public class AnswerTransfer implements Comparable<AnswerTransfer>, Serializable {
 
     @SerializedName("id")
     @Expose

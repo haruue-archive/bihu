@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,11 +29,12 @@ import cn.com.caoyue.bihu.data.transfer.QuestionTransfer;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.QuestionAdapter;
 
-public class HomeFragment extends Fragment implements QuestionListProvider.QuestionListDemander {
+public class HomeFragment extends Fragment implements QuestionListProvider.QuestionListDemander, MainActivity.CommitSuccessCallBack {
 
     View view;
     private EasyRecyclerView recyclerView;
     private QuestionAdapter adapter;
+    private Handler handler = new Handler();
 
     @Nullable
     @Override
@@ -67,6 +69,7 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
                 return false;
             }
         });
+        adapter.clear();
         adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
         adapter.notifyDataSetChanged();
         if (CurrentQuestion.isStoraged()) {
@@ -103,9 +106,6 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
     @Override
     public void onResume() {
         super.onResume();
-        adapter.clear();
-        adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
-        adapter.notifyDataSetChanged();
         if (CurrentQuestion.isStoraged()) {
             recyclerView.scrollToPosition(CurrentQuestion.getInstance().position);
         }
@@ -134,6 +134,11 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         return true;
     }
 
+    @Override
+    public void onCommitSuccess() {
+        new Listener().onRefresh();
+    }
+
     private class Listener implements RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
         @Override
@@ -145,7 +150,12 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         public void onItemClick(int position) {
             rippleAnimation(position);
             CurrentQuestion.getInstance().storage(adapter.getItem(position), position);
-            ((MainActivity) getActivity()).setFragment(new AnswerFragment(), AnswerFragment.class.getName() + CurrentQuestion.getInstance().id);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((MainActivity) getActivity()).setFragment(new AnswerFragment(), AnswerFragment.class.getName() + CurrentQuestion.getInstance().id);
+                }
+            }, 500);
         }
 
         // Ripple 动画
@@ -166,8 +176,13 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
 
         @Override
         public void onRefresh() {
-            adapter.clear();
-            QuestionListProvider.getInstance(HomeFragment.this).refresh();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.clear();
+                    QuestionListProvider.getInstance(HomeFragment.this).refresh();
+                }
+            }, 500);
         }
     }
 

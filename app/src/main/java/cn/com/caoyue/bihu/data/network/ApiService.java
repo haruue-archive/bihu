@@ -41,4 +41,12 @@ public interface ApiService {
     @POST("modifyFace.php")
     Call<InformationTransfer> modifyFace(@Field("apikey") String apikey, @Field("token") String token, @Field("face") String face);
 
+    @FormUrlEncoded
+    @POST("question.php")
+    Call<InformationTransfer> question(@Field("apikey") String apikey, @Field("token") String token, @Field("title") String title, @Field("content") String content);
+
+    @FormUrlEncoded
+    @POST("answer.php")
+    Call<InformationTransfer> answer(@Field("apikey") String apikey, @Field("token") String token, @Field("questionId") String questionId, @Field("content") String content);
+
 }

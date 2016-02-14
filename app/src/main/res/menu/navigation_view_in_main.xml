@@ -11,8 +11,7 @@
         <item
             android:id="@+id/ask"
             android:icon="@drawable/ic_question_answer_black_24dp"
-            android:title="@string/ask"
-            android:checkable="true" />
+            android:title="@string/ask" />
 
     </group>
 

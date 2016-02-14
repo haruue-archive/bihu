@@ -3,6 +3,7 @@ package cn.com.caoyue.bihu.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -26,6 +27,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LaunchPageActivity extends AppCompatActivity implements LoginDialog.LoginDialogCreater {
+
+    Handler handler = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,8 +119,14 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
         new Delete().from(UserTable.class).execute();
         new UserConverter(userTransfer).toUserTable().save();
         // 启动主活动
-        JActivityManager.getInstance().closeAllActivity();
-        MainActivity.actionStart(LaunchPageActivity.this);
+        findViewById(R.id.button_show_login_dialog).setVisibility(View.GONE);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                JActivityManager.getInstance().closeAllActivity();
+                MainActivity.actionStart(LaunchPageActivity.this);
+            }
+        }, 2000);
     }
 
     private class Listener implements View.OnClickListener {
