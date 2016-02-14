@@ -126,7 +126,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
                 JActivityManager.getInstance().closeAllActivity();
                 MainActivity.actionStart(LaunchPageActivity.this);
             }
-        }, 2000);
+        }, 1500);
     }
 
     private class Listener implements View.OnClickListener {

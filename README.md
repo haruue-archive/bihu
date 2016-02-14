@@ -14,10 +14,8 @@ Web端使用的是朱大的[know_web](https://github.com/Jude95/know_web.git)的
 + 查看、提交答案    
 + 更换头像    
 
-<!--
 ## 下载    
-[下载APK](app/app-release.apk)    
--->
+[下载APK](app/app-release.apk?raw=true)    
 
 ## Developed by
 Haruue Icymoon <haruue@caoyue.com.cn>    

@@ -16,11 +16,8 @@ import android.view.View;
 import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
 
-import java.util.Objects;
-
 import cn.com.caoyue.bihu.BuildConfig;
 import cn.com.caoyue.bihu.R;
-import cn.com.caoyue.bihu.data.provider.QuestionListProvider;
 import cn.com.caoyue.bihu.data.storage.CurrentFragment;
 import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;

@@ -6,4 +6,4 @@
 .DS_Store
 /build
 /captures
-/app/src/main/java/cn/com/caoyue/bihu/data/network/ApiKeys.java
+/app/src/main/jni/main.cpp

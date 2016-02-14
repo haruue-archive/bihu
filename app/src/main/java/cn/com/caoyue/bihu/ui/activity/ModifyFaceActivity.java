@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +44,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
     Bitmap selectImageBitmap;
     boolean isChangeFace = false;
     public final static int REQUEST_CODE = 142;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,7 +157,12 @@ public class ModifyFaceActivity extends AppCompatActivity {
                     // 更新本地缓存
                     CurrentUser.getInstance().face = url;
                     JUtils.Toast(getResources().getString(R.string.modify_face_success));
-                    finish();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            onBackPressed();
+                        }
+                    }, 500);
                 } else {
                     try {
                         JUtils.Log("inModifyFace_upload_failed1", "HTTP CODE " + response.code() + " Body: " + response.errorBody().string());
