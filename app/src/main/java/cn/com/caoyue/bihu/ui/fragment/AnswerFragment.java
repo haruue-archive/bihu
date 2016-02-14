@@ -8,13 +8,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.jude.utils.JUtils;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,7 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
     View view;
     EasyRecyclerView recyclerView;
     AnswerAdapter adapter;
+    AnswerTransfer currentAnswer;
     int currentPosition = -1;
 
     @Nullable
@@ -57,6 +61,15 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
             }
         });
         adapter.setOnItemClickListener(new Listener());
+        // Long Press Menu
+        registerForContextMenu(recyclerView);
+        adapter.setOnItemLongClickListener(new RecyclerArrayAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemClick(int position) {
+                currentAnswer = adapter.getItem(position);
+                return false;
+            }
+        });
         // Question Header
         adapter.addHeader(new RecyclerArrayAdapter.ItemView() {
             @Override
@@ -115,6 +128,25 @@ public class AnswerFragment extends Fragment implements AnswerListProvider.Answe
             recyclerView.scrollToPosition(currentPosition);
         }
         recyclerView.showRecycler();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.setHeaderTitle(currentAnswer.content);
+        menu.add(0, 0, 0, R.string.copy_answer);
+        menu.add(0, 1, 0, R.string.back_to_top);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                JUtils.copyToClipboard(currentAnswer.content);
+                break;
+            case 1:
+                recyclerView.scrollToPosition(0);
+        }
+        return true;
     }
 
     private class Listener implements SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener {

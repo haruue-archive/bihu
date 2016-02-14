@@ -8,18 +8,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.jude.utils.JUtils;
 
 import java.util.ArrayList;
 
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.provider.QuestionListProvider;
 import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
+import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.data.transfer.QuestionTransfer;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.QuestionAdapter;
@@ -54,6 +58,15 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
             }
         });
         adapter.setOnItemClickListener(new Listener());
+        // Long Press Menu
+        registerForContextMenu(recyclerView);
+        adapter.setOnItemLongClickListener(new RecyclerArrayAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemClick(int position) {
+                CurrentQuestion.getInstance().storage(adapter.getItem(position), position);
+                return false;
+            }
+        });
         adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
         adapter.notifyDataSetChanged();
         if (CurrentQuestion.isStoraged()) {
@@ -96,6 +109,29 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         if (CurrentQuestion.isStoraged()) {
             recyclerView.scrollToPosition(CurrentQuestion.getInstance().position);
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.setHeaderTitle(CurrentQuestion.getInstance().title);
+        menu.add(0, 0, 0, R.string.copy_question_title);
+        menu.add(0, 1, 0, R.string.copy_question_content);
+        menu.add(0, 2, 0, R.string.back_to_top);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                JUtils.copyToClipboard(CurrentQuestion.getInstance().title);
+                break;
+            case 1:
+                JUtils.copyToClipboard(CurrentQuestion.getInstance().content);
+                break;
+            case 2:
+                recyclerView.scrollToPosition(0);
+        }
+        return true;
     }
 
     private class Listener implements RecyclerArrayAdapter.OnLoadMoreListener, RecyclerArrayAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {

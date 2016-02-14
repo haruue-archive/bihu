@@ -39,4 +39,8 @@
     <string name="upload_fail">上传失败</string>
     <string name="modify_face_success">修改头像成功</string>
     <string name="cannot_get_bitmap">失败: 暂时只支持从系统图库中选择图片</string>
+    <string name="copy_question_title">复制问题标题</string>
+    <string name="copy_question_content">复制问题内容</string>
+    <string name="copy_answer">复制这条回答</string>
+    <string name="back_to_top">返回顶部</string>
 </resources>
