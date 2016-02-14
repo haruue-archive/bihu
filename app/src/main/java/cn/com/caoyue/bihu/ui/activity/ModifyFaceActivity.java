@@ -155,6 +155,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
                     // 更新本地缓存
                     CurrentUser.getInstance().face = url;
                     JUtils.Toast(getResources().getString(R.string.modify_face_success));
+                    finish();
                 } else {
                     try {
                         JUtils.Log("inModifyFace_upload_failed1", "HTTP CODE " + response.code() + " Body: " + response.errorBody().string());
