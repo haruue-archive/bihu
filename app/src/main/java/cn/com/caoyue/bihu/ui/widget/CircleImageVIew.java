@@ -1,77 +1,85 @@
 package cn.com.caoyue.bihu.ui.widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.Path;
-import android.graphics.Region;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * android circle imageView
+ * 自定义的圆形ImageView，可以直接当组件在布局中使用。
  *
- * @author Block Cheng
+ * @author caizhiming
  */
 public class CircleImageView extends ImageView {
+    private Paint paint;
 
-    Path path;
-    public PaintFlagsDrawFilter mPaintFlagsDrawFilter;// 毛边过滤
-    Paint paint;
-
-    public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        // TODO Auto-generated constructor stub
-        init();
+    public CircleImageView(Context context) {
+        this(context, null);
     }
 
     public CircleImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        // TODO Auto-generated constructor stub
-        init();
+        this(context, attrs, 0);
     }
 
-    public CircleImageView(Context context) {
-        super(context);
-        // TODO Auto-generated constructor stub
-        init();
-    }
-
-    public void init() {
-        mPaintFlagsDrawFilter = new PaintFlagsDrawFilter(0,
-                Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+    public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
         paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setColor(Color.WHITE);
 
     }
 
+    /**
+     * 绘制圆形图片
+     *
+     * @author caizhiming
+     */
     @Override
-    protected void onDraw(Canvas cns) {
-        // TODO Auto-generated method stub
-        float h = getMeasuredHeight() - 3.0f;
-        float w = getMeasuredWidth() - 3.0f;
-        if (path == null) {
-            path = new Path();
-            path.addCircle(
-                    w / 2.0f
-                    , h / 2.0f
-                    , (float) Math.min(w / 2.0f, (h / 2.0))
-                    , Path.Direction.CCW);
-            path.close();
+    protected void onDraw(Canvas canvas) {
+
+        Drawable drawable = getDrawable();
+        if (null != drawable) {
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            Bitmap b = getCircleBitmap(bitmap, 14);
+            final Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
+            final Rect rectDest = new Rect(0, 0, getWidth(), getHeight());
+            paint.reset();
+            canvas.drawBitmap(b, rectSrc, rectDest, paint);
+
+        } else {
+            super.onDraw(canvas);
         }
-        cns.drawCircle(w / 2.0f, h / 2.0f, Math.min(w / 2.0f, h / 2.0f) + 1.5f, paint);
-        int saveCount = cns.getSaveCount();
-        cns.save();
-        cns.setDrawFilter(mPaintFlagsDrawFilter);
-        cns.clipPath(path, Region.Op.REPLACE);
-        cns.setDrawFilter(mPaintFlagsDrawFilter);
-        cns.drawColor(Color.WHITE);
-        super.onDraw(cns);
-        cns.restoreToCount(saveCount);
     }
 
+    /**
+     * 获取圆形图片方法
+     *
+     * @param bitmap
+     * @param pixels
+     * @return Bitmap
+     * @author caizhiming
+     */
+    private Bitmap getCircleBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        int x = bitmap.getWidth();
+
+        canvas.drawCircle(x / 2, x / 2, x / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+
+    }
 }

@@ -20,8 +20,6 @@ import cn.com.caoyue.bihu.data.storage.CurrentFragment;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
 import cn.com.caoyue.bihu.ui.navigation.NavManager;
-import cn.com.caoyue.bihu.ui.util.GetFace;
-import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 import cn.com.caoyue.bihu.util.CurrentState;
 
 public class MainActivity extends AppCompatActivity {

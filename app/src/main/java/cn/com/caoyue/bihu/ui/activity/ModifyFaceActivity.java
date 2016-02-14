@@ -17,7 +17,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,12 +27,10 @@ import cn.com.caoyue.bihu.data.network.RestApi;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.data.transfer.InformationTransfer;
 import cn.com.caoyue.bihu.data.transfer.UploadInformationTransfer;
-import cn.com.caoyue.bihu.ui.navigation.NavManager;
 import cn.com.caoyue.bihu.ui.util.GetFace;
 import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 import cn.com.caoyue.bihu.util.CurrentState;
 import cn.com.caoyue.bihu.util.GetAlbumPicture;
-import cn.com.caoyue.bihu.util.PrivateMethodInvoker;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -45,7 +42,6 @@ public class ModifyFaceActivity extends AppCompatActivity {
     CircleImageView imageView;
     Bitmap selectImageBitmap;
     boolean isChangeFace = false;
-    String faceUrl;
     public final static int REQUEST_CODE = 142;
 
     @Override
