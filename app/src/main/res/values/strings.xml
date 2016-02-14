@@ -38,5 +38,5 @@
     <string name="give_up">放弃</string>
     <string name="upload_fail">上传失败</string>
     <string name="modify_face_success">修改头像成功</string>
-    <string name="cannot_get_bitmap">失败: 暂时只支持从图库中选择图片</string>
+    <string name="cannot_get_bitmap">失败: 暂时只支持从系统图库中选择图片</string>
 </resources>

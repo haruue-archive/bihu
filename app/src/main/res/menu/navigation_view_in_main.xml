@@ -23,14 +23,12 @@
             <item
                 android:id="@+id/set_face"
                 android:icon="@drawable/ic_face_black_24dp"
-                android:title="@string/change_face"
-                android:checkable="true" />
+                android:title="@string/change_face" />
 
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="@string/logout"
-                android:checkable="true" />
+                android:title="@string/logout" />
 
         </menu>
 

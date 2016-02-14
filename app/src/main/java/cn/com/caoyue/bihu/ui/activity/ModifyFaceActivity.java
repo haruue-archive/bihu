@@ -45,6 +45,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
     CircleImageView imageView;
     Bitmap selectImageBitmap;
     boolean isChangeFace = false;
+    String faceUrl;
     public final static int REQUEST_CODE = 142;
 
     @Override
@@ -77,7 +78,12 @@ public class ModifyFaceActivity extends AppCompatActivity {
         findViewById(R.id.btn_choose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetAlbumPicture(ModifyFaceActivity.this, GetAlbumPicture.SELECT_PIC_FOR_FACE).startSelect();
+                try {
+                    new GetAlbumPicture(ModifyFaceActivity.this, GetAlbumPicture.SELECT_PIC_FOR_FACE).startSelect();
+                } catch (Exception e) {
+                    JUtils.Toast(getResources().getString(R.string.cannot_get_bitmap));
+                    e.printStackTrace();
+                }
             }
         });
         findViewById(R.id.btn_give_up).setOnClickListener(new View.OnClickListener() {
@@ -150,7 +156,6 @@ public class ModifyFaceActivity extends AppCompatActivity {
             @Override
             public void onResponse(Response<InformationTransfer> response) {
                 if (response.code() == 200 && null != response.body()) {
-                    JUtils.Toast(response.body().info);
                     // 更新本地缓存
                     CurrentUser.getInstance().face = url;
                     JUtils.Toast(getResources().getString(R.string.modify_face_success));
@@ -225,7 +230,9 @@ public class ModifyFaceActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isChangeFace) {
-            setResult(RESULT_OK);
+            Intent result = new Intent();
+            result.putExtra("UserFaceUrl", CurrentUser.getInstance().face);
+            setResult(RESULT_OK, result);
         } else {
             setResult(RESULT_CANCELED);
         }

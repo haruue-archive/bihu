@@ -140,6 +140,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
 
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, LaunchPageActivity.class);
+        ((AppCompatActivity) context).overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
         context.startActivity(intent);
     }
 }

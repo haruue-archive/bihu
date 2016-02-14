@@ -17,6 +17,7 @@ public class NavManager {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     CircleImageView faceView;
+    Context context;
     private static NavManager navManager;
 
     public static NavManager getInstance() {
@@ -27,6 +28,7 @@ public class NavManager {
     }
 
     public DrawerLayout init(Context context) {
+        this.context = context;
         drawerLayout = (DrawerLayout) ((AppCompatActivity) context).findViewById(R.id.drawer_inMain);
         drawerLayout.setDrawerShadow(R.drawable.shadow, GravityCompat.START);
         navigationView = (NavigationView) ((AppCompatActivity) context).findViewById(R.id.nav_view_inMain);
@@ -40,8 +42,9 @@ public class NavManager {
         return drawerLayout;
     }
 
-    public static void clean() {
-        navManager = null;
+    public DrawerLayout refreshFace() {
+        new GetFace(faceView, CurrentUser.getInstance().face).load();
+        return drawerLayout;
     }
 
 }

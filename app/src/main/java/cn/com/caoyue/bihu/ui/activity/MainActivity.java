@@ -9,9 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
@@ -19,10 +17,12 @@ import com.jude.utils.JUtils;
 import cn.com.caoyue.bihu.BuildConfig;
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.storage.CurrentFragment;
+import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.ui.fragment.HomeFragment;
 import cn.com.caoyue.bihu.ui.navigation.NavManager;
+import cn.com.caoyue.bihu.ui.util.GetFace;
+import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 import cn.com.caoyue.bihu.util.CurrentState;
-import cn.com.caoyue.bihu.util.PrivateMethodInvoker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -119,9 +119,10 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case ModifyFaceActivity.REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    finish();
-                    NavManager.clean();
-                    actionStart(MainActivity.this);
+                    CurrentUser.getInstance().face = data.getExtras().getString("UserFaceUrl");
+                    drawerLayout = NavManager.getInstance().refreshFace();
+                    drawerLayout.closeDrawers();
+                    JUtils.Log("nav face refresh called");
                 }
                 break;
         }

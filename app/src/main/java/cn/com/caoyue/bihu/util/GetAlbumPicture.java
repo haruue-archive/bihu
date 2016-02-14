@@ -3,6 +3,9 @@ package cn.com.caoyue.bihu.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * 从系统相册中取出图片
@@ -22,7 +25,8 @@ public class GetAlbumPicture {
 
     public void startSelect() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setPackage("com.android.gallery3d");
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
