@@ -50,7 +50,12 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
                 .orderBy("RANDOM()")
                 .executeSingle();
         if (null == userTable) {
-            showLoginDialog();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showLoginDialog();
+                }
+            }, 500);
             return;
         }
         Call<UserTransfer> loginWithOldTokenCall = RestApi.getHaruueKnowWebApiService().loginWithOldToken(ApiKeys.HARUUE_KNOW_WEB_APIKEY, userTable.token);
@@ -108,7 +113,7 @@ public class LaunchPageActivity extends AppCompatActivity implements LoginDialog
 
             @Override
             public void onDialogCancel() {
-                AppControl.exitApp();
+
             }
         };
     }

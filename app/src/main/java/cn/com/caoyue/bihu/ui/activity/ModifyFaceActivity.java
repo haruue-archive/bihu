@@ -88,7 +88,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectImageBitmap = null;
-                new GetFace(imageView, CurrentUser.getInstance().face).load();
+                onBackPressed();
             }
         });
         findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {

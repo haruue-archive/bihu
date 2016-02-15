@@ -10,16 +10,40 @@ Web端使用的是朱大的[know_web](https://github.com/Jude95/know_web.git)的
 
 ## 功能    
 + 登录、登出    
+    ![](readme.res/device-2016-02-15-162559.gif)
+
 + 查看、提交问题    
+    ![](readme.res/device-2016-02-15-163152.gif)
+
 + 查看、提交答案    
+    ![](readme.res/device-2016-02-15-163649.gif)
+
 + 更换头像    
+    ![](readme.res/device-2016-02-15-164336.gif)
+    
 
 ## 下载    
 [下载APK](app/app-release.apk?raw=true)    
 
-## Developed by
+## 开发者
 Haruue Icymoon <haruue@caoyue.com.cn>    
 本项目作为红岩移动开发部寒假作业 Level3 和 Level4 部分    
 
 ## 开源    
-Apache 2.0    
+Apache License 2.0    
+``` License
+Copyright [2016] [Haruue Icymoon]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+```
