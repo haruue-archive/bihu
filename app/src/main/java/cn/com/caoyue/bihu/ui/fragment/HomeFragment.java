@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         adapter.addAll(QuestionListProvider.getInstance(HomeFragment.this).getArray());
         adapter.notifyDataSetChanged();
         if (CurrentQuestion.isStoraged()) {
-            recyclerView.scrollToPosition(CurrentQuestion.getInstance().position);
+            recyclerView.scrollToPosition(CurrentQuestion.getInstance().position - 1);
         }
         return view;
     }
@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
     public void onResume() {
         super.onResume();
         if (CurrentQuestion.isStoraged()) {
-            recyclerView.scrollToPosition(CurrentQuestion.getInstance().position);
+            recyclerView.scrollToPosition(CurrentQuestion.getInstance().position - 1);
         }
     }
 
