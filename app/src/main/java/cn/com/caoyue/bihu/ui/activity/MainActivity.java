@@ -193,4 +193,11 @@ public class MainActivity extends AppCompatActivity implements NewQuestionDialog
         void onCommitSuccess();
     }
 
+    @Override
+    public void onBackPressed() {//在drawer打开时按下back不直接退出，而是关闭drawer
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else super.onBackPressed();
+    }
+    
 }
