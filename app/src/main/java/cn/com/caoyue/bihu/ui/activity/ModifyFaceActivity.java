@@ -1,5 +1,6 @@
 package cn.com.caoyue.bihu.ui.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.jude.library.imageprovider.ImageProvider;
 import com.jude.library.imageprovider.OnImageSelectListener;
 import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -40,6 +43,10 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
+import rx.Observer;
+import rx.functions.Action1;
+import rx.observers.SafeSubscriber;
 
 public class ModifyFaceActivity extends AppCompatActivity {
 
@@ -78,53 +85,16 @@ public class ModifyFaceActivity extends AppCompatActivity {
         imageView = (CircleImageView) findViewById(R.id.face);
         refreshImageView();
         // Button Listener
-        findViewById(R.id.btn_choose).setOnClickListener(new View.OnClickListener() {
+        // Choose Button with grant permission
+        Observable<Void> trigger = RxView.clicks(findViewById(R.id.btn_choose));
+        RxPermissions.getInstance(this).request(trigger, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
             @Override
-            public void onClick(View v) {
-                imageProvider.getImageFromCameraOrAlbum(new OnImageSelectListener() {
-
-                    ProgressDialog dialog;
-
-                    @Override
-                    public void onImageSelect() {
-                        dialog = new ProgressDialog(ModifyFaceActivity.this);
-                        dialog.show();
-                    }
-
-                    @Override
-                    public void onImageLoaded(Uri uri) {
-                        dialog.dismiss();
-                        imageProvider.corpImage(uri, 150, 150, new OnImageSelectListener() {
-
-                            ProgressDialog dialog;
-
-                            @Override
-                            public void onImageSelect() {
-                                dialog = new ProgressDialog(ModifyFaceActivity.this);
-                                dialog.show();
-                            }
-
-                            @Override
-                            public void onImageLoaded(Uri uri) {
-                                dialog.dismiss();
-                                imageView.setImageURI(uri);
-                            }
-
-                            @Override
-                            public void onError() {
-                                JUtils.Toast(getResources().getString(R.string.fail_please_retry));
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError() {
-                        JUtils.Toast(getResources().getString(R.string.fail_please_retry));
-                        dialog.dismiss();
-                    }
-                });
-
+            public void call(Boolean isGranted) {
+                if (isGranted) {
+                    onSelectPicture();
+                } else {
+                    JUtils.Toast(getResources().getString(R.string.granted_permission_failed));
+                }
             }
         });
         findViewById(R.id.btn_give_up).setOnClickListener(new View.OnClickListener() {
@@ -137,6 +107,52 @@ public class ModifyFaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadFaceImage();
+            }
+        });
+    }
+
+    private void onSelectPicture() {
+        imageProvider.getImageFromCameraOrAlbum(new OnImageSelectListener() {
+
+            ProgressDialog dialog;
+
+            @Override
+            public void onImageSelect() {
+                dialog = new ProgressDialog(ModifyFaceActivity.this);
+                dialog.show();
+            }
+
+            @Override
+            public void onImageLoaded(Uri uri) {
+                dialog.dismiss();
+                imageProvider.corpImage(uri, 150, 150, new OnImageSelectListener() {
+
+                    ProgressDialog dialog;
+
+                    @Override
+                    public void onImageSelect() {
+                        dialog = new ProgressDialog(ModifyFaceActivity.this);
+                        dialog.show();
+                    }
+
+                    @Override
+                    public void onImageLoaded(Uri uri) {
+                        dialog.dismiss();
+                        imageView.setImageURI(uri);
+                    }
+
+                    @Override
+                    public void onError() {
+                        JUtils.Toast(getResources().getString(R.string.fail_please_retry));
+                        dialog.dismiss();
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+                JUtils.Toast(getResources().getString(R.string.fail_please_retry));
+                dialog.dismiss();
             }
         });
     }

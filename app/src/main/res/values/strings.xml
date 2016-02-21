@@ -55,4 +55,5 @@
     <string name="fail_please_retry">失败，请重试</string>
     <string name="answer_content_cannot_be_empty">答案内容不能为空</string>
     <string name="commit_answer_success">提交答案成功</string>
+    <string name="granted_permission_failed">对不起，因为无法取得此功能所依赖的权限，您请求的操作无法继续</string>
 </resources>
