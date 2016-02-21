@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class NewAnswerDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().setTitle(R.string.new_answer);
         getDialog().setCanceledOnTouchOutside(false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         final View dialogView = inflater.inflate(R.layout.dialog_new_answer, container);
         ((TextView) dialogView.findViewById(R.id.question_title)).setText(CurrentQuestion.getInstance().title);
         contentEditText = ((TextInputLayout) dialogView.findViewById(R.id.input_answer)).getEditText();
