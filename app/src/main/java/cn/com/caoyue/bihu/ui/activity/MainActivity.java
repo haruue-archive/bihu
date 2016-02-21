@@ -98,7 +98,10 @@ public class MainActivity extends AppCompatActivity implements NewQuestionDialog
 
     @Override
     public void onBackPressed() {
-        if (!getCurrentFragmentName().equals(HomeFragment.class.getName())) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            // 返回键关闭 Drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (!getCurrentFragmentName().equals(HomeFragment.class.getName())) {
             // 返回键回到主页面
             setFragment(new HomeFragment(), HomeFragment.class.getName());
         } else {
@@ -193,11 +196,4 @@ public class MainActivity extends AppCompatActivity implements NewQuestionDialog
         void onCommitSuccess();
     }
 
-    @Override
-    public void onBackPressed() {//在drawer打开时按下back不直接退出，而是关闭drawer
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }else super.onBackPressed();
-    }
-    
 }
