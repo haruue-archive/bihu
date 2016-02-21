@@ -73,8 +73,8 @@
             android:layout_alignParentRight="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
 
         <TextView
             android:id="@+id/button_give_up"
@@ -88,8 +88,8 @@
             android:layout_marginRight="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" />
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
 
     </RelativeLayout>
 

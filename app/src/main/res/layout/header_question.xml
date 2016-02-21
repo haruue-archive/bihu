@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <cn.com.caoyue.bihu.ui.widget.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/question_author_face"
             android:layout_width="40dp"
             android:layout_height="40dp"

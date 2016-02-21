@@ -11,7 +11,7 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
 import cn.com.caoyue.bihu.ui.util.GetFace;
-import cn.com.caoyue.bihu.ui.widget.CircleImageView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AnswerAdapter extends RecyclerArrayAdapter<AnswerTransfer> {
 

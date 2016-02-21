@@ -29,7 +29,7 @@ import cn.com.caoyue.bihu.data.transfer.AnswerTransfer;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.AnswerAdapter;
 import cn.com.caoyue.bihu.ui.util.GetFace;
-import cn.com.caoyue.bihu.ui.widget.CircleImageView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AnswerFragment extends Fragment implements AnswerListProvider.AnswerListDemander, MainActivity.CommitSuccessCallBack {
 

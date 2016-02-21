@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <cn.com.caoyue.bihu.ui.widget.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/face"
             android:layout_width="150dp"
             android:layout_height="150dp"

@@ -1,9 +1,11 @@
 package cn.com.caoyue.bihu.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.jude.library.imageprovider.ImageProvider;
+import com.jude.library.imageprovider.OnImageSelectListener;
 import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
 
@@ -29,9 +33,8 @@ import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.data.transfer.InformationTransfer;
 import cn.com.caoyue.bihu.data.transfer.UploadInformationTransfer;
 import cn.com.caoyue.bihu.ui.util.GetFace;
-import cn.com.caoyue.bihu.ui.widget.CircleImageView;
 import cn.com.caoyue.bihu.util.CurrentState;
-import cn.com.caoyue.bihu.util.GetAlbumPicture;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -41,10 +44,10 @@ import retrofit2.Response;
 public class ModifyFaceActivity extends AppCompatActivity {
 
     CircleImageView imageView;
-    Bitmap selectImageBitmap;
     boolean isChangeFace = false;
     public final static int REQUEST_CODE = 142;
     Handler handler = new Handler();
+    ImageProvider imageProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class ModifyFaceActivity extends AppCompatActivity {
     }
 
     private void init() {
+        // Get Image Provider
+        imageProvider = new ImageProvider(this);
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_inModifyFace);
         setSupportActionBar(toolbar);
@@ -76,18 +81,55 @@ public class ModifyFaceActivity extends AppCompatActivity {
         findViewById(R.id.btn_choose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    new GetAlbumPicture(ModifyFaceActivity.this, GetAlbumPicture.SELECT_PIC_FOR_FACE).startSelect();
-                } catch (Exception e) {
-                    JUtils.Toast(getResources().getString(R.string.cannot_get_bitmap));
-                    e.printStackTrace();
-                }
+                imageProvider.getImageFromCameraOrAlbum(new OnImageSelectListener() {
+
+                    ProgressDialog dialog;
+
+                    @Override
+                    public void onImageSelect() {
+                        dialog = new ProgressDialog(ModifyFaceActivity.this);
+                        dialog.show();
+                    }
+
+                    @Override
+                    public void onImageLoaded(Uri uri) {
+                        dialog.dismiss();
+                        imageProvider.corpImage(uri, 150, 150, new OnImageSelectListener() {
+
+                            ProgressDialog dialog;
+
+                            @Override
+                            public void onImageSelect() {
+                                dialog = new ProgressDialog(ModifyFaceActivity.this);
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void onImageLoaded(Uri uri) {
+                                dialog.dismiss();
+                                imageView.setImageURI(uri);
+                            }
+
+                            @Override
+                            public void onError() {
+                                JUtils.Toast(getResources().getString(R.string.fail_please_retry));
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError() {
+                        JUtils.Toast(getResources().getString(R.string.fail_please_retry));
+                        dialog.dismiss();
+                    }
+                });
+
             }
         });
         findViewById(R.id.btn_give_up).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImageBitmap = null;
                 onBackPressed();
             }
         });
@@ -156,6 +198,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
                 if (response.code() == 200 && null != response.body()) {
                     // 更新本地缓存
                     CurrentUser.getInstance().face = url;
+                    isChangeFace = true;
                     JUtils.Toast(getResources().getString(R.string.modify_face_success));
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -181,11 +224,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
     }
 
     private void refreshImageView() {
-        if (null != selectImageBitmap) {
-            imageView.setImageBitmap(selectImageBitmap);
-        } else {
-            new GetFace(imageView, CurrentUser.getInstance().face).load();
-        }
+        new GetFace(imageView, CurrentUser.getInstance().face).load();
     }
 
     @Override
@@ -201,24 +240,6 @@ public class ModifyFaceActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case GetAlbumPicture.SELECT_PIC_FOR_FACE:
-                if (resultCode == RESULT_OK) {
-                    if (null != data.getExtras() && null != data.getExtras().get("data")) {
-                        selectImageBitmap = (Bitmap) data.getExtras().get("data");
-                        refreshImageView();
-                        isChangeFace = true;
-                    } else {
-                        JUtils.Toast(getResources().getString(R.string.cannot_get_bitmap));
-                    }
-                }
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         imageView = (CircleImageView) findViewById(R.id.face);
@@ -228,7 +249,12 @@ public class ModifyFaceActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         JActivityManager.getInstance().popActivity(ModifyFaceActivity.this);
-        selectImageBitmap = null;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageProvider.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

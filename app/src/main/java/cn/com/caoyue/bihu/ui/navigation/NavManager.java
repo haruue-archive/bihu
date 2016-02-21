@@ -10,7 +10,7 @@ import android.widget.TextView;
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.ui.util.GetFace;
-import cn.com.caoyue.bihu.ui.widget.CircleImageView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NavManager {
 

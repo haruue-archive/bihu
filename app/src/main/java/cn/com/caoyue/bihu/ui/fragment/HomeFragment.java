@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import cn.com.caoyue.bihu.R;
 import cn.com.caoyue.bihu.data.provider.QuestionListProvider;
 import cn.com.caoyue.bihu.data.storage.CurrentQuestion;
-import cn.com.caoyue.bihu.data.storage.CurrentUser;
 import cn.com.caoyue.bihu.data.transfer.QuestionTransfer;
 import cn.com.caoyue.bihu.ui.activity.MainActivity;
 import cn.com.caoyue.bihu.ui.adapter.QuestionAdapter;
