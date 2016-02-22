@@ -34,6 +34,15 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
     private EasyRecyclerView recyclerView;
     private QuestionAdapter adapter;
     private Handler handler = new Handler();
+    private boolean clicked;
+
+    public boolean isClicked() {
+        return clicked;
+    }
+
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
+    }
 
     @Nullable
     @Override
@@ -148,11 +157,17 @@ public class HomeFragment extends Fragment implements QuestionListProvider.Quest
         @Override
         public void onItemClick(int position) {
             rippleAnimation(position);
+            if (isClicked()) {
+                //防止用户再次点击
+                return;
+            }
+            setClicked(true);
             CurrentQuestion.getInstance().storage(adapter.getItem(position), position);
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     ((MainActivity) getActivity()).setFragment(new AnswerFragment(), AnswerFragment.class.getName() + CurrentQuestion.getInstance().id);
+                    setClicked(false);
                 }
             }, 500);
         }

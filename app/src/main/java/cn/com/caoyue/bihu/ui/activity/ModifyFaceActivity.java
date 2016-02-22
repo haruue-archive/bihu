@@ -55,6 +55,8 @@ public class ModifyFaceActivity extends AppCompatActivity {
     public final static int REQUEST_CODE = 142;
     Handler handler = new Handler();
     ImageProvider imageProvider;
+    private boolean touched;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +86,8 @@ public class ModifyFaceActivity extends AppCompatActivity {
         // Set default face
         imageView = (CircleImageView) findViewById(R.id.face);
         refreshImageView();
+        //Initialize ProgressDialog
+        progressDialog = new ProgressDialog(ModifyFaceActivity.this);
         // Button Listener
         // Choose Button with grant permission
         Observable<Void> trigger = RxView.clicks(findViewById(R.id.btn_choose));
@@ -106,6 +110,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
         findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog.show();
                 uploadFaceImage();
             }
         });
@@ -188,6 +193,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
                     JUtils.Log("inModifyFace_upload_success", "url: " + response.body().url);
                     saveFaceUrl(response.body().url);
                 } else {
+                    progressDialog.dismiss();
                     JUtils.Toast(getResources().getString(R.string.upload_fail));
                     try {
                         JUtils.Log("inModifyFace_upload_failed1", "HTTP CODE " + response.code() + " Body: " + response.errorBody().string());
@@ -199,6 +205,7 @@ public class ModifyFaceActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable t) {
+                progressDialog.dismiss();
                 JUtils.Toast(getResources().getString(R.string.network_error));
                 JUtils.Log("inModifyFace_upload_failure");
                 t.printStackTrace();
@@ -215,7 +222,12 @@ public class ModifyFaceActivity extends AppCompatActivity {
                     // 更新本地缓存
                     CurrentUser.getInstance().face = url;
                     isChangeFace = true;
+                    progressDialog.dismiss();
                     JUtils.Toast(getResources().getString(R.string.modify_face_success));
+                    //防止用户再次点击
+                    findViewById(R.id.btn_save).setOnClickListener(null);
+                    findViewById(R.id.btn_choose).setOnClickListener(null);
+                    findViewById(R.id.btn_give_up).setOnClickListener(null);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

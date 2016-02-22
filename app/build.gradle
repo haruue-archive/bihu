@@ -8,8 +8,8 @@ android {
         applicationId "cn.com.caoyue.bihu"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 7
-        versionName "1.1.1"
+        versionCode 8
+        versionName "1.1.2"
         ndk {
             moduleName "JniApiKeys"
             ldLibs "log", "z", "m"
