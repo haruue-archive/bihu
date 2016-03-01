@@ -22,7 +22,7 @@ public class RestApi {
     public static void init() {
 
         Retrofit retrofitBuilderForKnowWebApi = new Retrofit.Builder()
-                .baseUrl("http://120.27.113.124/api/know_web/")
+                .baseUrl("https://vps.caoyue.com.cn/api/know_web/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
 

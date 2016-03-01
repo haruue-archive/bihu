@@ -22,8 +22,10 @@ Web端使用的是朱大的[know_web](https://github.com/Jude95/know_web.git)的
     ![](readme.res/device-2016-02-15-164336.gif)
     
 
-## 下载    
-[下载APK](app/app-release.apk?raw=true)    
+## 下载
+__注意：__ 在 1.1.3 版本中我们加入了 https ，但是由于域名暂时还没有备案，因此阿里云随时都可能重定向这个页面。当这个现象发生时，APP将无法登录，如遇到此情况，请下载 1.1.2 版本。
++ [下载最新版](app/app-release.apk?raw=true)
++ [下载 1.1.2 ](https://github.com/haruue/bihu/blob/v1.1.2/app/app-release.apk?raw=true)
 
 ## 开发者
 Haruue Icymoon <haruue@caoyue.com.cn>    
