@@ -29,7 +29,7 @@ public class RestApi {
         haruueKnowWebApiService = retrofitBuilderForKnowWebApi.create(ApiService.class);
 
         Retrofit retrofitBuilderForStorageApi = new Retrofit.Builder()
-                .baseUrl("http://haruue2.wx.jaeapp.com/")
+                .baseUrl("https://api.caoyue.com.cn/know_web/image_api/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
                 .build();
 
